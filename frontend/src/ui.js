@@ -10,6 +10,11 @@ import { InputNode } from './nodes/inputNode';
 import { LLMNode } from './nodes/llmNode';
 import { OutputNode } from './nodes/outputNode';
 import { TextNode } from './nodes/textNode';
+import { FilterNode } from './nodes/filterNode';
+import { TransformNode } from './nodes/transformNode';
+import { ConditionNode } from './nodes/conditionNode';
+import { MergeNode } from './nodes/mergeNode';
+import { NoteNode } from './nodes/noteNode';
 
 import 'reactflow/dist/style.css';
 
@@ -20,6 +25,11 @@ const nodeTypes = {
   llm: LLMNode,
   customOutput: OutputNode,
   text: TextNode,
+  filter: FilterNode,
+  transform: TransformNode,
+  condition: ConditionNode,
+  merge: MergeNode,
+  note: NoteNode,
 };
 
 const selector = (state) => ({
@@ -90,7 +100,7 @@ export const PipelineUI = () => {
 
     return (
         <>
-        <div ref={reactFlowWrapper} style={{width: '100wv', height: '70vh'}}>
+        <div ref={reactFlowWrapper} style={{ width: '100%', height: '70vh' }}>
             <ReactFlow
                 nodes={nodes}
                 edges={edges}
@@ -104,10 +114,14 @@ export const PipelineUI = () => {
                 proOptions={proOptions}
                 snapGrid={[gridSize, gridSize]}
                 connectionLineType='smoothstep'
+                defaultEdgeOptions={{ type: 'smoothstep', style: { stroke: '#cbd5e1', strokeWidth: 1.5 } }}
             >
-                <Background color="#aaa" gap={gridSize} />
+                <Background color="#e2e8f0" gap={20} size={1} />
                 <Controls />
-                <MiniMap />
+                <MiniMap nodeColor={(n) => ({
+                  customInput: '#6366f1', customOutput: '#8b5cf6', text: '#f97316', llm: '#f59e0b',
+                  filter: '#14b8a6', transform: '#10b981', condition: '#0ea5e9', merge: '#d946ef', note: '#eab308',
+                }[n.type] || '#94a3b8')} />
             </ReactFlow>
         </div>
         </>
